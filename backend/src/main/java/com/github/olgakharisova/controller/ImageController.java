@@ -17,7 +17,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -85,9 +85,10 @@ public class ImageController {
     public List<ImageMeta> getMetaBatch(@RequestParam(required = false) Integer pageNumber,
                                         @RequestParam(required = false) Integer size,
                                         @RequestParam(required = false) String sortingField,
-                                        @RequestParam(required = false) Sort.Direction direction) {
+                                        @RequestParam(required = false) Sort.Direction direction,
+                                        @RequestParam(required = false) Set<String> tags) {
         log.info("getMetaBatch");
-        return imageService.getImageMetaBatch(pageNumber, size, sortingField, direction);
+        return imageService.getImageMetaBatch(pageNumber, size, sortingField, direction, tags);
     }
 
     /**

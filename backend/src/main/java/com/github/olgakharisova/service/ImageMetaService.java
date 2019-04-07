@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ImageMetaService {
@@ -48,7 +46,7 @@ public class ImageMetaService {
     @Transactional
     public Optional<Rating> applyVoice(UUID imageId, Long newVote) {
         Optional<ImageMeta> maybeImageMeta = imageMetaRepository.findById(imageId);
-        if(maybeImageMeta.isPresent()) {
+        if (maybeImageMeta.isPresent()) {
             ImageMeta imageMeta = maybeImageMeta.get();
             Rating rating = Optional.ofNullable(imageMeta.getRating()).orElseGet(Rating::new);
             imageMetaRepository.save(imageMeta.setRating(rating.compute(newVote)));
@@ -61,13 +59,23 @@ public class ImageMetaService {
     public List<ImageMeta> getImageMetaBatch(@Nullable Integer pageNumber,
                                              @Nullable Integer size,
                                              @Nullable String sortingField,
-                                             @Nullable Sort.Direction direction) {
+                                             @Nullable Sort.Direction direction,
+                                             @Nullable Set<String> tags) {
         pageNumber = Optional.ofNullable(pageNumber).orElse(1) - 1;
         size = Optional.ofNullable(size).orElse(Integer.MAX_VALUE);
         direction = Optional.ofNullable(direction).orElse(Sort.Direction.DESC);
         sortingField = Optional.ofNullable(sortingField).orElse("createdAt");
-        PageRequest of = PageRequest.of(pageNumber, size, Sort.by(direction, sortingField));
-        return imageMetaRepository.findAll(of).getContent();
+        Specification<ImageMeta> spec = Optional.ofNullable(tags)
+                .orElseGet(Collections::emptySet)
+                .stream()
+                .map(this::tagWithin)
+                .reduce(Specification.where(null), (acc, elem) -> acc = acc.and(elem));
+        PageRequest pageRequest = PageRequest.of(pageNumber, size, Sort.by(direction, sortingField));
+        return imageMetaRepository.findAll(spec, pageRequest).getContent();
+    }
 
+    private Specification<ImageMeta> tagWithin(String tag) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.isMember(tag, root.get("tags"));
     }
 }

@@ -23,8 +23,8 @@ public class ImageMeta {
     )
     private UUID uuid;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Tag> tags;
+    @ElementCollection
+    private Set<String> tags;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Rating rating;
