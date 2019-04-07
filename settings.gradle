@@ -1,0 +1,4 @@
+rootProject.name = 'Tula_Web_Cup_2019'
+include 'backend'
+include 'frontend'
+
