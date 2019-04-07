@@ -1,0 +1,13 @@
+gradle*
+.gradle/
+.idea/
+*.db
+
+node_modules/
+frontend/README.md
+
+*.iml
+
+backend/build/
+build/
+backend/out/
