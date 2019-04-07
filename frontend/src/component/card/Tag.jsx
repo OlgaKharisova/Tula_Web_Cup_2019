@@ -5,10 +5,25 @@ import React, {Component} from 'react'
  */
 export class Tag extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            name: "",
+        };
+    }
+
+    componentDidMount() {
+        this.setState({
+                name: this.props.name,
+            }
+        )
+    }
+
     render() {
-        return(
+        return (
             <div className="btn-group-sm  m-1" role="group">
-                <button type="button" className="btn btn-secondary">tag</button>
+                <button type="button" className="btn btn-secondary">{this.state.name}</button>
             </div>
         )
     }

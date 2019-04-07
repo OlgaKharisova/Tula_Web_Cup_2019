@@ -2,14 +2,16 @@ import React, {Component} from 'react'
 import {Button, Modal} from "react-bootstrap";
 import config from '../config'
 import axios from 'axios';
+import { Redirect } from 'react-router-dom'
+
 
 /**
  * Компонент загрузки изображения
  */
 export class UploadImageModal extends Component {
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.handleClose = this.handleClose.bind(this);
         this.handleUploadImage = this.handleUploadImage.bind(this);
         this.handleFileSelected = this.handleFileSelected.bind(this);
@@ -76,6 +78,7 @@ export class UploadImageModal extends Component {
         console.log("handleUploadImage", this.state.fileUrl);
         const formData = new FormData(event.target);
         formData.append("tags", "testTag1");
+        formData.append("tags", "testTag2");
         formData.append("file", this.state.fileBlob);
         axios.post(config.uploadImage, formData,
             {
@@ -85,7 +88,8 @@ export class UploadImageModal extends Component {
             })
             .then(response => {
                 console.log(response.data);
-                this.clearState()
+                this.clearState();
+                window.location = "/";
             }).catch(reason => {
             console.log(reason);
             this.clearState()

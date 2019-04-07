@@ -7,6 +7,7 @@ import com.github.olgakharisova.model.request.NewImageRequest;
 import com.github.olgakharisova.service.ImageMetaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Контроллер для работы с двоичными большими объектами
@@ -36,7 +40,7 @@ public class ImageController {
      * @throws IOException
      */
     @PostMapping("upload")
-    public @ResponseBody UUID uploadImage(@ModelAttribute /*@Valid*/ NewImageRequest request) throws IOException {
+    public @ResponseBody UUID uploadImage(@ModelAttribute @Valid NewImageRequest request) throws IOException {
         log.info("upload");
         return imageService.putImage(request);
     }
@@ -47,8 +51,14 @@ public class ImageController {
      * @return
      */
     @GetMapping(value = "download/{imageId}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] downloadImage(@PathVariable UUID imageId) {
+    public byte[] downloadImage(@PathVariable UUID imageId)  {
         log.info("download");
+        //симуляция долгого ответа от сервера
+        try {
+            Thread.sleep((ThreadLocalRandom.current().nextInt(3)+2) * 1000) ;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return imageService.getImageBlob(imageId)
                 .orElseThrow(() -> new ResourceNotFoundException(imageId));
     }
@@ -64,6 +74,20 @@ public class ImageController {
         return imageService.getImageMeta(imageId).orElseThrow(
                 () -> new ResourceNotFoundException(imageId)
         );
+    }
+
+    /**
+     * Получение множества метаинформации по изображениям постранично
+     * @param
+     * @return
+     */
+    @GetMapping("meta")
+    public List<ImageMeta> getMetaBatch(@RequestParam(required = false) Integer pageNumber,
+                                        @RequestParam(required = false) Integer size,
+                                        @RequestParam(required = false) String sortingField,
+                                        @RequestParam(required = false) Sort.Direction direction) {
+        log.info("getMetaBatch");
+        return imageService.getImageMetaBatch(pageNumber, size, sortingField, direction);
     }
 
     /**

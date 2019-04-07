@@ -6,10 +6,15 @@ import com.github.olgakharisova.model.request.NewImageRequest;
 import com.github.olgakharisova.repository.BlobRepository;
 import com.github.olgakharisova.repository.ImageMetaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,5 +56,18 @@ public class ImageMetaService {
         } else {
             return Optional.empty();
         }
+    }
+
+    public List<ImageMeta> getImageMetaBatch(@Nullable Integer pageNumber,
+                                             @Nullable Integer size,
+                                             @Nullable String sortingField,
+                                             @Nullable Sort.Direction direction) {
+        pageNumber = Optional.ofNullable(pageNumber).orElse(1) - 1;
+        size = Optional.ofNullable(size).orElse(Integer.MAX_VALUE);
+        direction = Optional.ofNullable(direction).orElse(Sort.Direction.DESC);
+        sortingField = Optional.ofNullable(sortingField).orElse("createdAt");
+        PageRequest of = PageRequest.of(pageNumber, size, Sort.by(direction, sortingField));
+        return imageMetaRepository.findAll(of).getContent();
+
     }
 }
