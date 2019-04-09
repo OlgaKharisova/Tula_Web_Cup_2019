@@ -34,11 +34,12 @@ code {
     monospace;
 }
 
-div {
-  position: relative;
-  overflow: hidden;
-}
-input {
+/*div {*/
+  /*position: relative;*/
+  /*overflow: hidden;*/
+/*}*/
+
+.center-input {
   position: absolute;
   font-size: 50px;
   opacity: 0;

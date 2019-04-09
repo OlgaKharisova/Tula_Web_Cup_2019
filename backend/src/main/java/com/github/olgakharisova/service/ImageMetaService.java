@@ -68,6 +68,7 @@ public class ImageMetaService {
         Specification<ImageMeta> spec = Optional.ofNullable(tags)
                 .orElseGet(Collections::emptySet)
                 .stream()
+                .map(String::toLowerCase)
                 .map(this::tagWithin)
                 .reduce(Specification.where(null), (acc, elem) -> acc = acc.and(elem));
         PageRequest pageRequest = PageRequest.of(pageNumber, size, Sort.by(direction, sortingField));

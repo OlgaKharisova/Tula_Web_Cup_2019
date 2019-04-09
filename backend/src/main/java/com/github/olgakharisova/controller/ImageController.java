@@ -7,6 +7,7 @@ import com.github.olgakharisova.model.request.NewImageRequest;
 import com.github.olgakharisova.service.ImageMetaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -50,6 +51,7 @@ public class ImageController {
      * @param imageId
      * @return
      */
+    @Cacheable(cacheNames = "blobs")
     @GetMapping(value = "download/{imageId}", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] downloadImage(@PathVariable UUID imageId)  {
         log.info("download");
