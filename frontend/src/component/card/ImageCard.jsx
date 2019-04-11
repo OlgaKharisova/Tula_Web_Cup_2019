@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Tag} from "./Tag";
 import {Rating} from "./Rating";
-import axios from 'axios';
 import config from '../../config'
 
 /**
@@ -21,7 +20,6 @@ export class ImageCard extends Component {
     }
 
     componentDidMount() {
-        console.log("componentDidMount", this.props, this.state);
         this.setState({
             originalName: this.props.originalName,
             rating: this.props.rating,

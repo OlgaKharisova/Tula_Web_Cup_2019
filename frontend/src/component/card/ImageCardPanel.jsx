@@ -2,9 +2,10 @@ import React, {Component} from 'react'
 import config from '../../config'
 import axios from 'axios';
 import {ImageCard} from "./ImageCard";
+import {WorkNavbar} from "../WorkNavbar";
 
 /**
- * Плитки с карточками изображений
+ * Плитки с карточками изображений + навбар сортировки/пагинации
  */
 export class ImageCardPanel extends Component {
 
@@ -17,12 +18,7 @@ export class ImageCardPanel extends Component {
     }
 
     componentDidMount() {
-        axios.get(config.imageMetaBatch)
-            .then(response => {
-                this.setState({
-                    metas: response.data
-                })
-            })
+        this.getData();
     }
 
     render() {
@@ -36,9 +32,23 @@ export class ImageCardPanel extends Component {
             />
         });
         return (
-            <div className="card-columns m-1">
-                {cards}
+            <div>
+                <WorkNavbar callback={this.getData}/>
+                <div className="card-columns m-1">
+                    {cards}
+                </div>
             </div>
+
         )
+    }
+
+    getData = (params) => {
+        axios.get(config.imageMetaBatch, {params : params})
+            .then(response => {
+                console.log("getData", response);
+                this.setState({
+                    metas: response.data
+                })
+            })
     }
 }

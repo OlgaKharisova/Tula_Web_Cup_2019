@@ -15,7 +15,7 @@
 }
 @media (min-width: 1200px) {
   .card-columns {
-    column-count: 5;
+    column-count: 7;
   }
 }
 
@@ -34,15 +34,3 @@ code {
     monospace;
 }
 
-/*div {*/
-  /*position: relative;*/
-  /*overflow: hidden;*/
-/*}*/
-
-.center-input {
-  position: absolute;
-  font-size: 50px;
-  opacity: 0;
-  right: 0;
-  top: 0;
-}

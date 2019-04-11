@@ -26,16 +26,16 @@ export class UploadImageModal extends Component {
         };
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            showModal: this.props.showModal,
+            showModal: nextProps.showModal,
         })
     }
 
     render() {
         let tags = this.state.tags.map(tag => {
             return <input type="button" className="btn btn-secondary m-1" onClick={this.handleDeleteTag(tag)} value={tag}/>
-        })
+        });
         return (
             <div>
                 <Modal show={this.state.showModal} size="lg" onHide={this.handleClose}>
