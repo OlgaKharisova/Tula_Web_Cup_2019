@@ -10,7 +10,6 @@ import java.util.Set;
 @Data
 public class NewImageRequest {
 
-    @NotNull
     private Set<String> tags;
 
     @NotNull

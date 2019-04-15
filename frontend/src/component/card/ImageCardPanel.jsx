@@ -14,12 +14,10 @@ export class ImageCardPanel extends Component {
 
         this.state = {
             metas: [],
+            totalPages: null
         };
     }
 
-    componentDidMount() {
-        this.getData();
-    }
 
     render() {
         let cards = this.state.metas.map(meta => {
@@ -33,7 +31,7 @@ export class ImageCardPanel extends Component {
         });
         return (
             <div>
-                <WorkNavbar callback={this.getData}/>
+                <WorkNavbar callback={this.getData} totalPages={this.state.totalPages} tags={["tag12", "tag2"]}/>
                 <div className="card-columns m-1">
                     {cards}
                 </div>
@@ -43,11 +41,11 @@ export class ImageCardPanel extends Component {
     }
 
     getData = (params) => {
-        axios.get(config.imageMetaBatch, {params : params})
+        axios.get(config.imageMetaBatch, {params: params})
             .then(response => {
-                console.log("getData", response);
                 this.setState({
-                    metas: response.data
+                    metas: response.data.metas,
+                    totalPages: response.data.totalPages,
                 })
             })
     }

@@ -9,12 +9,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication(scanBasePackages = "com.github.olgakharisova")
 @EnableJpaRepositories("com.github.olgakharisova.repository")
 @Configuration
 @EnableWebMvc
+@EnableCaching
 @CacheConfig(cacheNames = "blobs")
 public class EntryPoint implements WebMvcConfigurer {
 

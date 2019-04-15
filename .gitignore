@@ -11,3 +11,4 @@ frontend/README.md
 backend/build/
 build/
 backend/out/
+backend/src/main/resources/static/*

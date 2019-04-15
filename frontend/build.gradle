@@ -1,3 +1,6 @@
 group 'com.github.olgakharisova'
 version "0.0.1-SNAPSHOT"
 
+exec {
+    commandLine "./build_front.sh"
+}

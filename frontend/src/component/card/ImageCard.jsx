@@ -30,7 +30,7 @@ export class ImageCard extends Component {
 
     render() {
         let tags = this.state.tags.map(tag => {
-            return <Tag name={tag}/>
+            return <Tag name={tag} key={tag}/>
         });
         return (
             <div className="card">

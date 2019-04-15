@@ -2,6 +2,7 @@ package com.github.olgakharisova.controller;
 
 import com.github.olgakharisova.exception.ResourceNotFoundException;
 import com.github.olgakharisova.model.entity.ImageMeta;
+import com.github.olgakharisova.model.entity.PageResponse;
 import com.github.olgakharisova.model.entity.Rating;
 import com.github.olgakharisova.model.request.NewImageRequest;
 import com.github.olgakharisova.service.ImageMetaService;
@@ -17,7 +18,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -84,13 +84,13 @@ public class ImageController {
      * @return
      */
     @GetMapping("meta")
-    public List<ImageMeta> getMetaBatch(@RequestParam(required = false) Integer pageNumber,
-                                        @RequestParam(required = false) Integer size,
-                                        @RequestParam(required = false) String sortingField,
-                                        @RequestParam(required = false) Sort.Direction direction,
-                                        @RequestParam(required = false) Set<String> tags) {
+    public PageResponse getMetaBatch(@RequestParam(required = false) Integer pageNumber,
+                                     @RequestParam(required = false) Integer pageSize,
+                                     @RequestParam(required = false) String sortingField,
+                                     @RequestParam(required = false) Sort.Direction direction,
+                                     @RequestParam(required = false) Set<String> tags) {
         log.info("getMetaBatch");
-        return imageService.getImageMetaBatch(pageNumber, size, sortingField, direction, tags);
+        return imageService.getImageMetaBatch(pageNumber, pageSize, sortingField, direction, tags);
     }
 
     /**
